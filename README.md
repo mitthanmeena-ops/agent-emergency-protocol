@@ -1,5 +1,7 @@
 # Agent Emergency Protocol (AEP)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23188364.svg)](https://doi.org/10.5281/zenodo.23188364)
+
 **A vendor-neutral runtime emergency-code language for autonomous AI agents.**
 
 Pilots and air traffic control act on the same transponder code the moment something goes wrong. AEP does the same for AI agents. Every incident gets:
@@ -49,7 +51,9 @@ implement AEP, including commercially, provided you:
 2. link to this repository, and
 3. state any changes you made.
 
-**Cite as:** Meena, M. (2026). *Agent Emergency Protocol (AEP) v0.1 — Draft Specification.* https://github.com/mitthanmeena-ops/agent-emergency-protocol
+**Cite as:** Meena, M. (2026). *Agent Emergency Protocol (AEP) v0.1 — Draft Specification.* Zenodo. https://doi.org/10.5281/zenodo.23188364
+
+**Repository:** https://github.com/mitthanmeena-ops/agent-emergency-protocol
 
 See [CITATION.cff](CITATION.cff) for machine-readable citation data.
 
