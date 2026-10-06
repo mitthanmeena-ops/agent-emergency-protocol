@@ -1,0 +1,39 @@
+{
+  "aep_version": "0.1",
+  "event_id": "evt_01JAHIJACK0001",
+  "event": "declare",
+  "incident_id": "inc_2026_1005_0007",
+  "code": 2100,
+  "word": "HIJACK",
+  "level": 3,
+  "cause_type": "attack",
+  "declared_by": { "kind": "control_plane", "id": "fortik-prod-1" },
+  "subject": {
+    "agent_id": "finance_agent_07",
+    "instance_ids": ["inst_3f1c"],
+    "swarm_id": null,
+    "scope": "agent",
+    "sponsor": "jane.smith@acme.example",
+    "platform": "bedrock-agentcore"
+  },
+  "trigger": {
+    "action_id": "act_01JA8812",
+    "verb": "SEND",
+    "target": "gmail:investor@venturefund.example",
+    "policy_rule": "POL-105",
+    "evidence_refs": ["diary:seq/48211", "diary:seq/48214"]
+  },
+  "response": {
+    "automatic": ["hold_send", "isolate", "stop_memory_writes"],
+    "authority_removed": ["gmail:send_external", "drive:share_external"],
+    "undo_handles": ["undo_drive_perm_8812"]
+  },
+  "mappings": {
+    "atlas": [{ "id": "AML.T0051.001", "strength": "direct" }],
+    "attack": [],
+    "nist_800_53_evidence": ["SI-10", "SI-4", "AC-4", "IR-4"]
+  },
+  "time": "2026-10-05T18:23:03.114Z",
+  "record_hash": "sha256:example-not-a-real-hash-2100",
+  "prev_hash": "sha256:example-not-a-real-hash-prev"
+}

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use or adapt the Agent Emergency Protocol, please cite it as below and credit \"Agent Emergency Protocol (AEP), created by Mitthan Meena\"."
+title: "Agent Emergency Protocol (AEP) v0.1 — Draft Specification"
+type: software
+authors:
+  - family-names: Meena
+    given-names: Mitthan
+version: "0.1-draft"
+date-released: "2026-10-06"
+license: CC-BY-4.0
+repository-code: "https://github.com/mitthanmeena-ops/agent-emergency-protocol"
+abstract: >-
+  Agent Emergency Protocol: a vendor-neutral runtime emergency-code language
+  for autonomous AI agents.
+  Each incident gets a short code, a severity level (L1 Watch to L5 Ground),
+  a default first response and a standard, hash-chained evidence record,
+  with mappings to MITRE ATLAS, MITRE ATT&CK and NIST SP 800-53 evidence.
+keywords:
+  - AI agents
+  - agent security
+  - incident response
+  - emergency codes
+  - MITRE ATLAS
+  - NIST SP 800-53

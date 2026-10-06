@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mitthanmeena-ops/agent-emergency-protocol/schemas/aep-declaration.schema.json",
+  "title": "AEP declaration event (v0.1 draft)",
+  "description": "One Agent Emergency Protocol event: a declaration, level change, release or clearance. Agent Emergency Protocol (AEP), created by Mitthan Meena. CC BY 4.0.",
+  "type": "object",
+  "required": ["aep_version", "event_id", "event", "code", "word", "level", "cause_type", "declared_by", "subject", "time", "record_hash"],
+  "additionalProperties": true,
+  "properties": {
+    "aep_version": { "const": "0.1" },
+    "event_id": { "type": "string", "minLength": 1 },
+    "event": {
+      "description": "declare = new code; escalate = level up; lower = level down (needs a human); release = leave L4+ (needs two humans); clear = end the code (reason required); attach = add a code to an existing incident.",
+      "enum": ["declare", "escalate", "lower", "release", "clear", "attach"]
+    },
+    "incident_id": { "type": "string", "description": "Groups related events. Required for attach." },
+    "code": {
+      "enum": [1100, 1200, 1300, 2100, 2200, 2300, 3100, 3200, 4100, 4200, 4300, 5100, 5200, 5300, 6100, 6200, 6300, 7100, 7200, 9000, 9900]
+    },
+    "word": {
+      "enum": ["IMPOSTOR", "ORPHAN", "SHADOW", "HIJACK", "ESCALATE", "TAMPER", "DRIFT", "POISON", "LEAK", "DESTROY", "SPEND", "RUNAWAY", "SWARM", "SPAWN", "BAD TOOL", "BAD MODEL", "BAD CONNECTOR", "DARK", "BLIND", "GROUND STOP", "FLEET STOP"]
+    },
+    "level": { "type": "integer", "minimum": 1, "maximum": 5, "description": "1 Watch, 2 Contain, 3 Isolate, 4 Quarantine, 5 Ground." },
+    "previous_level": { "type": ["integer", "null"], "minimum": 1, "maximum": 5 },
+    "cause_type": { "enum": ["attack", "accident", "attack_or_accident", "governance", "response"] },
+    "declared_by": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["control_plane", "gateway", "human", "agent"] },
+        "id": { "type": "string" }
+      }
+    },
+    "approvers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named humans approving a lower, release or clear. Two distinct approvers are required to release from L4 or above, and for 9900 FLEET STOP."
+    },
+    "reason": { "type": "string", "description": "Required for clear." },
+    "subject": {
+      "type": "object",
+      "properties": {
+        "agent_id": { "type": ["string", "null"] },
+        "instance_ids": { "type": "array", "items": { "type": "string" } },
+        "swarm_id": { "type": ["string", "null"] },
+        "class": {
+          "type": ["object", "null"],
+          "description": "For 9000 GROUND STOP: the class of agents grounded.",
+          "properties": {
+            "kind": { "enum": ["team", "model", "tool", "connector", "platform"] },
+            "id": { "type": "string" }
+          }
+        },
+        "scope": { "enum": ["agent", "swarm", "class", "fleet"] },
+        "sponsor": { "type": ["string", "null"] },
+        "platform": { "type": ["string", "null"] }
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "properties": {
+        "action_id": { "type": "string" },
+        "action_hash": { "type": "string", "description": "SHA256(verb + target + schema), used by 5200 SWARM." },
+        "verb": { "type": "string" },
+        "target": { "type": "string" },
+        "policy_rule": { "type": "string" },
+        "count": { "type": "integer", "minimum": 0 },
+        "window_seconds": { "type": "integer", "minimum": 0 },
+        "evidence_refs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "automatic": { "type": "array", "items": { "type": "string" } },
+        "authority_removed": { "type": "array", "items": { "type": "string" } },
+        "undo_handles": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "mappings": {
+      "type": "object",
+      "description": "MITRE mappings name what MAY have caused the event. NIST entries list controls the evidence MAY SUPPORT, never controls it satisfies.",
+      "properties": {
+        "atlas": { "type": "array", "items": { "$ref": "#/$defs/mapping" } },
+        "attack": { "type": "array", "items": { "$ref": "#/$defs/mapping" } },
+        "nist_800_53_evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "time": { "type": "string", "format": "date-time" },
+    "record_hash": { "type": "string", "pattern": "^sha256:" },
+    "prev_hash": { "type": ["string", "null"], "pattern": "^sha256:" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "event": { "enum": ["lower", "release", "clear"] } } },
+      "then": {
+        "properties": { "declared_by": { "properties": { "kind": { "enum": ["control_plane", "gateway", "human"] } } } },
+        "description": "Rule 1: an agent may raise an alert but can never lower, release or clear one."
+      }
+    },
+    {
+      "if": { "properties": { "event": { "const": "clear" } } },
+      "then": { "required": ["reason"] }
+    },
+    {
+      "if": { "properties": { "event": { "const": "attach" } } },
+      "then": { "required": ["incident_id"] }
+    },
+    {
+      "if": {
+        "properties": { "event": { "const": "release" }, "previous_level": { "minimum": 4 } },
+        "required": ["previous_level"]
+      },
+      "then": { "required": ["approvers"], "properties": { "approvers": { "minItems": 2, "uniqueItems": true } } }
+    },
+    {
+      "if": { "properties": { "code": { "const": 9900 }, "event": { "const": "declare" } } },
+      "then": { "required": ["approvers"], "properties": { "approvers": { "minItems": 2, "uniqueItems": true } } }
+    }
+  ],
+  "$defs": {
+    "mapping": {
+      "type": "object",
+      "required": ["id", "strength"],
+      "properties": {
+        "id": { "type": "string" },
+        "strength": { "enum": ["direct", "partial", "conditional", "none", "response"] },
+        "condition": { "type": "string", "description": "Required in practice when strength is conditional." }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "aep_version": "0.1",
+  "event_id": "evt_01JASWARM0001",
+  "event": "declare",
+  "incident_id": "inc_2026_1005_0011",
+  "code": 5200,
+  "word": "SWARM",
+  "level": 3,
+  "cause_type": "attack_or_accident",
+  "declared_by": { "kind": "control_plane", "id": "fortik-prod-1" },
+  "subject": {
+    "agent_id": null,
+    "instance_ids": ["inst_a01", "inst_a02", "inst_a03", "inst_a04", "inst_a05", "inst_a06"],
+    "swarm_id": "swarm_7c2e",
+    "scope": "swarm",
+    "sponsor": null,
+    "platform": "mixed"
+  },
+  "trigger": {
+    "action_hash": "sha256:example-action-hash-send-q3-forecast",
+    "verb": "SEND",
+    "target": "gmail:external/*  file:drive://finance/Q3-forecast.xlsx",
+    "policy_rule": "SWARM-MAX-5",
+    "count": 41,
+    "window_seconds": 60,
+    "evidence_refs": ["diary:seq/50102", "diary:seq/50143"]
+  },
+  "response": {
+    "automatic": ["hold_matching_calls", "swarm_to_L3"],
+    "authority_removed": ["gmail:send_external"],
+    "undo_handles": ["undo_delayed_send_batch_41"]
+  },
+  "mappings": {
+    "atlas": [
+      {
+        "id": "AML.T0061",
+        "strength": "conditional",
+        "condition": "Only if self-replicating prompt instructions caused the swarm; otherwise no ATLAS mapping."
+      }
+    ],
+    "attack": [],
+    "nist_800_53_evidence": ["SI-4", "SC-5", "IR-4(5)"]
+  },
+  "time": "2026-10-05T19:02:41.880Z",
+  "record_hash": "sha256:example-not-a-real-hash-5200",
+  "prev_hash": "sha256:example-not-a-real-hash-2100"
+}

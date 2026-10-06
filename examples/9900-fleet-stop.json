@@ -1,0 +1,34 @@
+{
+  "aep_version": "0.1",
+  "event_id": "evt_01JAFLEET0001",
+  "event": "declare",
+  "incident_id": "inc_2026_1005_0012",
+  "code": 9900,
+  "word": "FLEET STOP",
+  "level": 5,
+  "cause_type": "response",
+  "declared_by": { "kind": "human", "id": "ciso@acme.example" },
+  "approvers": ["ciso@acme.example", "secops-lead@acme.example"],
+  "reason": "Active 5200 SWARM plus suspected 6100 BAD TOOL on shared MCP server; stop all agents pending triage.",
+  "subject": {
+    "agent_id": null,
+    "instance_ids": [],
+    "swarm_id": null,
+    "scope": "fleet",
+    "sponsor": null,
+    "platform": null
+  },
+  "response": {
+    "automatic": ["revoke_all_agent_credentials", "cancel_queues", "stop_all_copies"],
+    "authority_removed": ["*"],
+    "undo_handles": []
+  },
+  "mappings": {
+    "atlas": [],
+    "attack": [],
+    "nist_800_53_evidence": ["IR-4", "AC-3(2)", "CP-10"]
+  },
+  "time": "2026-10-05T19:05:10.002Z",
+  "record_hash": "sha256:example-not-a-real-hash-9900",
+  "prev_hash": "sha256:example-not-a-real-hash-5200"
+}
