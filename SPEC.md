@@ -449,9 +449,60 @@ For v0.1 compatibility, the example below uses `aep_version` and event type `aep
     "attack": [],
     "nist_800_53_evidence": ["SI-10", "SI-4", "AC-4", "IR-4"]
   },
-
   "time": "2026-10-05T18:23:03.114Z",
   "record_hash": "sha256:...",
   "prev_hash": "sha256:..."
 }
-</> Markdown
+```
+
+**Other events:** `escalate` level up, `lower` needs a human, `release` needs two at L4 or above, `clear` requires a reason, `attach` adds a code to an existing incident.
+
+**Rule:** a `lower`, `release` or `clear` whose `declared_by.kind` is `agent` is rejected.
+
+## Audit evidence statement
+
+**Agent Emergency Protocol Incident Code declarations generate audit evidence mapped to SP 800-53 controls. They do not by themselves certify that any control is satisfied.** Whether a control is met depends on the system boundary, how it is implemented, the assessment procedure and the customer's environment.
+
+| Control | What incident-code evidence can support | Condition |
+|---|---|---|
+| AU-12 Audit record generation | Every declaration, level change and clearance is an audit record | Every event is recorded |
+| AU-10 Non-repudiation | Who declared, lowered or released, bound to the record | Hash-chained log, identity binding, trusted time source, and signed or published root hashes |
+| IR-4 Incident handling | Containment actions taken and their timing | Codes that trigger containment or investigation |
+| IR-6 Incident reporting | Structured record to report from | Requires the customer's reporting workflow; these codes alone are not reporting |
+| IR-8 Incident response plan | Evidence that defined procedures exist and run | Requires the customer's written plan; individual events do not support IR-8 |
+
+**Alignment:** NIST is developing SP 800-53 Control Overlays for Securing AI Systems, including proposed overlays for single-agent and multi-agent systems. The mappings in this draft should be revised to match those overlays once drafts are published. [NIST COSAiS](https://csrc.nist.gov/Projects/cosais)
+
+## Path to a standard and open questions
+
+**The story in one line:** MITRE says what attack may have caused an event; NIST says what evidence auditors need; Agent Emergency Protocol Incident Codes are the missing runtime language for agent loss of control, authority reduction, undo and fleet response.
+
+**Path**
+
+1. Public review: security engineers, agent builders, auditors and incident responders review the v0.1 draft and open issues for missing codes, wrong levels and bad mappings.
+2. Field testing: one or more organizations or vendors test the codes in real agent workflows and report what is missing.
+3. Neutral-home discussion: propose the draft to a neutral community such as OWASP GenAI Security Project, Coalition for Secure AI, Cloud Security Alliance, or another relevant standards/community group.
+4. Second implementer: recruit at least one independent implementer so this is not seen as one person's format.
+5. Framework alignment: align with NIST COSAiS agent overlays when available, and submit incident-code-native gaps such as DARK, ORPHAN and SWARM to MITRE ATLAS where an adversary can cause them.
+
+**Open questions**
+
+- Final short name: “AEP” may collide with existing uses, so the public name should remain **Agent Emergency Protocol Incident Codes** unless a better neutral short name emerges.
+- Re-verify every ATLAS ID and name against the current ATLAS release before any v1.0 release.
+- Have a compliance assessor review the NIST evidence column.
+- Should the default level per code be normative, advisory, or profile-based?
+- How should multi-organization incidents be handled, such as a vendor-hosted agent acting in two customers' systems?
+- Governance: who approves new codes after v1.0?
+
+## Sources
+
+- [MITRE ATLAS](https://atlas.mitre.org/)
+- [MITRE ATLAS data repository](https://github.com/mitre-atlas/atlas-data)
+- [MITRE ATT&CK](https://attack.mitre.org/)
+- [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
+- [NIST Control Overlays for Securing AI Systems](https://csrc.nist.gov/Projects/cosais)
+- [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+
+---
+
+*Agent Emergency Protocol Incident Codes v0.1 · © 2026 Mitthan Meena · CC BY 4.0 · Attribution required: “Agent Emergency Protocol Incident Codes, created by Mitthan Meena.”*
