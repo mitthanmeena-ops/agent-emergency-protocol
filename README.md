@@ -1,6 +1,7 @@
 # Agent Emergency Protocol Incident Codes
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23188364.svg)](https://doi.org/10.5281/zenodo.23188364)
+![Agent Emergency Protocol Incident Codes](assets/agent-emergency-protocol-incident-codes.png)
 
 **A vendor-neutral runtime incident-code language for autonomous AI agents.**
 
