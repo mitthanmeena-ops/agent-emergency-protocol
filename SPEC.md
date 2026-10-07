@@ -449,7 +449,9 @@ For v0.1 compatibility, the example below uses `aep_version` and event type `aep
     "attack": [],
     "nist_800_53_evidence": ["SI-10", "SI-4", "AC-4", "IR-4"]
   },
+
   "time": "2026-10-05T18:23:03.114Z",
   "record_hash": "sha256:...",
   "prev_hash": "sha256:..."
 }
+</> Markdown
